@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-feed
+  labels:
+    app: backend-feed
+    service: backend-feed 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: backend-feed
+  template:
+    metadata:
+      labels:
+        run: backend-feed
+        app: backend-feed
+    spec:
+      containers:
+      - name: backend-feed
+        image: mpsijben/udagram-api-feed:latest
+        ports:
+          - containerPort: 8080
+            protocol: TCP 
+        envFrom:
+            - configMapRef:
+                name: udagram-config 
+            - secretRef:
+                name: udagram-secret
+            - secretRef:
+                name: aws-credentials

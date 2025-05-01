@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-user
+  labels:
+    app: backend-user
+    service: backend-user 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: backend-user
+  template:
+    metadata:
+      labels:
+        run: backend-user
+        app: backend-user
+    spec:
+      containers:
+      - name: backend-user
+        image: mpsijben/udagram-api-user:latest
+        ports:
+          - containerPort: 8080
+        envFrom:
+            - configMapRef:
+                name: udagram-config 
+            - secretRef:
+                name: udagram-secret
+            - secretRef:
+                name: aws-credentials
